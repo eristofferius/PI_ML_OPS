@@ -4,8 +4,8 @@ app = FastAPI()
 
 #http://127.0.0.1:8000
 
-@app.get("/")
-async def index():
+@app.get("/inicio")
+async def ruta_prueba():
     return {"message" : "TEST"}
 
 
