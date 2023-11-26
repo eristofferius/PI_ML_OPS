@@ -1,12 +1,12 @@
-#from fastapi import FastAPI
+from fastapi import FastAPI
 
-#app = FastAPI()
+app = FastAPI()
 
-##http://127.0.0.1:8000
+http://127.0.0.1:8000
 
-#@app.get("/")
-#ef index():
- #   return {"message" : "TEST"}
+@app.get("/")
+ef index():
+   return {"message" : "TEST"}
 
 
 #def developer( desarrollador : str ): Cantidad de items y porcentaje de contenido Free por año según empresa desarrolladora. Ejemplo de retorno:
