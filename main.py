@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 
 #app = FastAPI()
@@ -15,6 +16,10 @@ app = FastAPI()
 @app.get("/inicio")
 async def ruta_prueba():
     return {"message" : "TEST"}
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
 
 #def developer( desarrollador : str ): Cantidad de items y porcentaje de contenido Free por año según empresa desarrolladora. Ejemplo de retorno:
 
