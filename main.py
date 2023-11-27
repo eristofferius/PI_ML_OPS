@@ -13,7 +13,7 @@ app = FastAPI()
 # Cantidad de items y porcentaje de contenido Free por año según empresa desarrolladora. Ejemplo de retorno:
 @app.get("/developer/{desarrollador}")
 def developer(desarrollador:str):
-    df = pd.read_json(r'/data/data_clean/Steam_Games_clean.json.gz', compression='gzip')
+    df = pd.read_json('data/data_clean/Steam_Games_clean.json.gz', compression='gzip')
     df = df[['price','developer','release_date']]
     desarrollador = desarrollador.title() #Ponemos como esta en los datasets
 
@@ -63,7 +63,7 @@ def userdata(usuario:str):
 
     user_items = False #Creamos como bandera
 
-    for parteDelDs in pd.read_csv(r'/data/data_clean/items.csv.gz', chunksize=3000): #Cargamos por partes el dataframe para que Render pueda procesarlo.
+    for parteDelDs in pd.read_csv('data/data_clean/items.csv.gz', chunksize=3000): #Cargamos por partes el dataframe para que Render pueda procesarlo.
         if usuario in parteDelDs['user_id'].unique(): # Busca si esta en esa porcion del dataframe el usuario
             user_items = parteDelDs
             break
@@ -76,7 +76,7 @@ def userdata(usuario:str):
     user_items = user_items[user_items['user_id'] == usuario] #Filtramos por usuario
 
     #Cargamos los datasets
-    juegos = pd.read_json(r'/data/data_clean/Steam_Games_clean.json.gz', compression='gzip')
+    juegos = pd.read_json('data/data_clean/Steam_Games_clean.json.gz', compression='gzip')
     juegos = juegos[['id','price']]
     recomendaciones = pd.read_json('data/data_clean/aur_clean.json.gz', compression='gzip')
     recomendaciones = recomendaciones[['user_id','recommend']]
@@ -121,7 +121,7 @@ def userdata(usuario:str):
 def UserForGenre(genero:str):
     
     #Leemos el dataframe
-    df = pd.read_json(r'/data/data_clean/genre_clean.json.gz', compression='gzip', encoding='MacRoman')
+    df = pd.read_json('data/data_clean/genre_clean.json.gz', compression='gzip', encoding='MacRoman')
     genero = genero.capitalize() #Normalizamos el nombre
     
     #Nos fijamos si el genero pedido se encuentra en la lista de generos
@@ -140,7 +140,7 @@ def UserForGenre(genero:str):
 #Devuelve el top 3 de desarrolladores con juegos MÁS recomendados por usuarios para el año dado. (reviews.recommend = True y comentarios positivos)
 @app.get("/best_developer_year/{anio}")
 def best_developer_year(anio:int):
-    developers = pd.read_json('/data/data_clean/Steam_Games_clean.json.gz', compression='gzip', encoding='MacRoman')
+    developers = pd.read_json('data/data_clean/Steam_Games_clean.json.gz', compression='gzip', encoding='MacRoman')
     developers = developers[['release_date','id','developer']]
 
     #Verificamos si existe el año pedido.
@@ -149,7 +149,7 @@ def best_developer_year(anio:int):
     else:
         return {'Error':'No hay ningun lanzamiento ese año.'}
 
-    user_reviews = pd.read_json('/data/data_clean/aur_clean.json.gz', compression='gzip')
+    user_reviews = pd.read_json('data/data_clean/aur_clean.json.gz', compression='gzip')
     user_reviews = user_reviews[['item_id','recommend','sentiment_analysis']]
     user_reviews = user_reviews.merge(developers, left_on='item_id', right_on='id')[['developer','sentiment_analysis','recommend']] # Unimos los datasets para que el manejo sea mas facil
 
@@ -185,7 +185,7 @@ def best_developer_year(anio:int):
 # reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento como valor positivo o negativo.
 @app.get("/developer_reviews_analysis/{desarrollador}")
 def developer_reviews_analysis(desarrollador:str):
-    developers = pd.read_json('/data/data_clean/Steam_Games_clean.json.gz', compression='gzip')
+    developers = pd.read_json('data/data_clean/Steam_Games_clean.json.gz', compression='gzip')
     developers = developers[['id','developer']]
     desarrollador = desarrollador.title() #Normalizamos el nombre
 
@@ -195,7 +195,7 @@ def developer_reviews_analysis(desarrollador:str):
     else:
         return {'Error':'No existe el desarrollador'}
 
-    user_reviews = pd.read_json('/data/data_clean/aur_clean.json.gz', compression='gzip')
+    user_reviews = pd.read_json('data/data_clean/aur_clean.json.gz', compression='gzip')
     user_reviews = user_reviews[['item_id','sentiment_analysis']]
 
     #Unimos los datasets, con inner asi los que no se encuentran en ambos no figuran.
@@ -225,7 +225,7 @@ def recomendacion_juego( id_de_producto ):
 @app.get("/recomendacion_usuario/{usuario}")
 def recomendacion_usuario(usuario:str):
     # Llamamos al dataset que realizamos en el momento de preparar los datos para el EDA
-    df = pd.read_json('ETL - data/data_clean/EDA_clean.json.gz') 
+    df = pd.read_json('data/data_clean/EDA_clean.json.gz') 
 
     # Nos quedamos con las columnas necesarias
     df = df[['user_id','item_name','item_id']]
