@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import pandas as pd
 import ast
 import pickle
-import surprise
+#import surprise
 
 
 app = FastAPI()
